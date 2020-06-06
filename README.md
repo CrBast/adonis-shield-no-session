@@ -1,19 +1,24 @@
 ❕ Not official adonis shield repo. Only use this package when you need to use shield without cookies.
 
-# Adonis Shield 🛡️
-| Silver shield for common web attacks.
+# Adonis Shield wihout session (v4 only)🛡️
 
-Adonis shield is middleware to standard HTTP websites to protect themselves from common web attacks like **xss**, **csp** and **csrf**.
+Adonis shield is middleware to standard HTTP websites to protect themselves from common web attacks like **xss** and **csp**.
 
 [![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Appveyor][appveyor-image]][appveyor-url]
-[![Coveralls][coveralls-image]][coveralls-url]
-
-<img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1497112678/adonis-purple_pzkmzt.svg" width="200px" align="right" hspace="30px" vspace="100px">
 
 NOTE: You don't need this middleware if you are writing an API server.
 
+## Difference between this package and official
+
+This package do not use session provider. 
+
+CSRF protection has been disabled as it requires the use of cookies.
+
+## Installation 
+
+```
+adonis install adonis-shield-no-session
+```
 
 ## What's in the box?
 
@@ -21,7 +26,6 @@ NOTE: You don't need this middleware if you are writing an API server.
 2. Setup [X-Content-Type-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options) header.
 3. Setup [X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options) header.
 4. Setup [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection) header.
-5. Protect HTML forms from [CSRF attacks](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)).
 
 
 ## Setup
@@ -80,16 +84,6 @@ test.failing('2 + 2 is always 4, but add method returns 6', (assert) => {
 
 Now since the `add` method has a bug, it will return `6` instead of `4`. But the build will pass.
 
-[appveyor-image]: https://img.shields.io/appveyor/ci/thetutlage/adonis-shield/master.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/adonis-shield-no-session
 
-[appveyor-url]: https://ci.appveyor.com/project/thetutlage/adonis-shield
-
-[npm-image]: https://img.shields.io/npm/v/@adonisjs/shield.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/@adonisjs/shield
-
-[travis-image]: https://img.shields.io/travis/adonisjs/adonis-shield/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/adonisjs/adonis-shield
-
-[coveralls-image]: https://img.shields.io/coveralls/adonisjs/adonis-shield/master.svg?style=flat-square
-
-[coveralls-url]: https://coveralls.io/github/adonisjs/adonis-shield
+[npm-url]: https://www.npmjs.com/package/adonis-shield-no-session

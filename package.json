@@ -1,7 +1,7 @@
 {
   "name": "adonis-shield-no-session",
-  "version": "1.1.1",
-  "description": "Adonis shield is middleware to standard HTTP websites to protect themselves from common web attacks like xss, csp and csrf",
+  "version": "1.1.2",
+  "description": "Adonis shield is middleware to standard HTTP websites to protect themselves from common web attacks like xss and csp. This version do not use session.",
   "main": "index.js",
   "files": [
     "example",
@@ -27,7 +27,7 @@
     "csrf",
     "csp"
   ],
-  "author": "virk",
+  "author": "virk & CrBast",
   "license": "MIT",
   "devDependencies": {
     "@adonisjs/fold": "^4.0.9",

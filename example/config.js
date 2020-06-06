@@ -129,9 +129,11 @@ module.exports = {
   | CSRF Protection adds another layer of security by making sure, actionable
   | routes does have a valid token to execute an action.
   |
+  | !!! To activate csrf, it's necessary to use the session provider.
+  |
   */
   csrf: {
-    enable: true,
+    enable: false,
     methods: ['POST', 'PUT', 'DELETE'],
     filterUris: [],
     cookieOptions: {
