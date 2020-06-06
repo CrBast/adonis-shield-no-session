@@ -1,3 +1,5 @@
+❕ Not official adonis shield repo. Only use this package when you need to use shield without cookies.
+
 # Adonis Shield 🛡️
 | Silver shield for common web attacks.
 
