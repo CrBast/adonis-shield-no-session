@@ -1,6 +1,6 @@
 {
   "name": "@adonisjs/shield",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "Adonis shield is middleware to standard HTTP websites to protect themselves from common web attacks like xss, csp and csrf",
   "main": "index.js",
   "files": [
@@ -17,7 +17,8 @@
     "test": "nyc node japaFile.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "commit": "git-cz",
-    "lint": "standard"
+    "lint": "standard",
+    "lint-fix": "standard --fix"
   },
   "keywords": [
     "adonisjs",

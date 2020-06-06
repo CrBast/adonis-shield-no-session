@@ -7,7 +7,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
-*/
+ */
 
 const guard = require('node-guard')
 const csp = require('node-csp')
@@ -172,7 +172,9 @@ class Shield {
    * @return {void}
    */
   setCspHeaders (headers, response) {
-    this._getHeaderKeys(headers).forEach((key) => (response.header(key, headers[key])))
+    this._getHeaderKeys(headers).forEach((key) =>
+      response.header(key, headers[key])
+    )
   }
 
   /**
@@ -286,7 +288,9 @@ class Shield {
     }
 
     const encryptedToken = request.header('x-xsrf-token')
-    return encryptedToken ? nodeCookie.unPackValue(encryptedToken, this.appSecret, !!this.appSecret) : null
+    return encryptedToken
+      ? nodeCookie.unPackValue(encryptedToken, this.appSecret, !!this.appSecret)
+      : null
   }
 
   /**
@@ -304,7 +308,9 @@ class Shield {
     view.share({
       csrfToken,
       csrfField: function () {
-        return this.safe(`<input type="hidden" name="_csrf" value="${csrfToken}">`)
+        return this.safe(
+          `<input type="hidden" name="_csrf" value="${csrfToken}">`
+        )
       }
     })
   }
@@ -343,10 +349,10 @@ class Shield {
   }
 
   async handle ({ request, response, session, view }, next) {
-    if (!session) {
-      throw GE
-        .RuntimeException
-        .invoke('Make sure to install/setup session provider to use shield middleware')
+    if (!session && this._isCsrfEnabled()) {
+      throw GE.RuntimeException.invoke(
+        'Make sure to install/setup session provider to use shield middleware with CSRF. You can disable CSRF with enable=false.'
+      )
     }
 
     const { request: req, response: res } = response
@@ -378,42 +384,48 @@ class Shield {
      */
     this.setRequestNonce(request)
 
-    /**
-     * Getting the csrf secret and setting
-     * as the session value too.
-     */
-    const csrfSecret = await this.getCsrfSecret(session)
+    if (this._isCsrfEnabled()) {
+      /**
+       * Getting the csrf secret and setting
+       * as the session value too.
+       */
+      const csrfSecret = await this.getCsrfSecret(session)
 
-    /**
-     * If the request url and method is supposed to be checked
-     * against csrf attack, then verify the token.
-     */
-    if (this._isCsrfEnabled() && this._fallsUnderValidationUri(request) && this._fallsUnderValidationMethod(request.method())) {
-      const csrfToken = this.getCsrfToken(request)
-      this.verifyToken(csrfSecret, csrfToken)
+      /**
+       * If the request url and method is supposed to be checked
+       * against csrf attack, then verify the token.
+       */
+      if (
+        this._isCsrfEnabled() &&
+        this._fallsUnderValidationUri(request) &&
+        this._fallsUnderValidationMethod(request.method())
+      ) {
+        const csrfToken = this.getCsrfToken(request)
+        this.verifyToken(csrfSecret, csrfToken)
+      }
+
+      /**
+       * Generate a new token for each request, if verification
+       * was skipped or passed.
+       */
+      const newCsrfToken = this.generateCsrfToken(csrfSecret)
+
+      /**
+       * Share the csrf token, csrf field as view locals
+       */
+      this.shareCsrfViewLocals(newCsrfToken, view)
+
+      /**
+       * Set the response cookie for csrf token. This is required by Javascript
+       * frameworks like angular, and don't worry cookie is signed and encrypted.
+       */
+      this.setCsrfCookie(newCsrfToken, response)
+
+      /**
+       * Set token on the request object
+       */
+      this.setRequestCsrfToken(newCsrfToken, request)
     }
-
-    /**
-     * Generate a new token for each request, if verification
-     * was skipped or passed.
-     */
-    const newCsrfToken = this.generateCsrfToken(csrfSecret)
-
-    /**
-     * Share the csrf token, csrf field as view locals
-     */
-    this.shareCsrfViewLocals(newCsrfToken, view)
-
-    /**
-     * Set the response cookie for csrf token. This is required by Javascript
-     * frameworks like angular, and don't worry cookie is signed and encrypted.
-     */
-    this.setCsrfCookie(newCsrfToken, response)
-
-    /**
-     * Set token on the request object
-     */
-    this.setRequestCsrfToken(newCsrfToken, request)
     await next()
   }
 }
