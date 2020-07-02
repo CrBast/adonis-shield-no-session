@@ -1,4 +1,4 @@
-❕ Not official adonis shield repo. Only use this package when you need to use shield without cookies.
+❕ Not official adonis shield repo. Only use this package when you need adonis shield without cookies.
 
 # Adonis Shield wihout session (v4 only)🛡️
 
@@ -10,7 +10,7 @@ NOTE: You don't need this middleware if you are writing an API server.
 
 ## Difference between this package and official
 
-This package do not use session provider. 
+This package don't use session provider. 
 
 CSRF protection has been disabled as it requires the use of cookies.
 
